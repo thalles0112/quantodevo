@@ -7,6 +7,9 @@ import { useEffect, useState, useRef } from "react";
 
 
 
+
+
+
 export default function Home() {
   const [pagamentos, setPagamentos] = useState([])
   const formRef = useRef(null)
@@ -21,7 +24,7 @@ export default function Home() {
   
   function calculateTotal(){
     let valor = 0
-    pagamentos.map(p=>valor += p.valor)
+    pagamentos.map(p=>valor += parseFloat(p.valor))
 
     return valor
   }
@@ -38,7 +41,7 @@ export default function Home() {
     const form = formRef.current
     const valor = form.valor.value
     const data = new Date().toLocaleDateString()
-    const resp = await axios.post('/api/pagamento', [...pagamentos, {valor:parseFloat(valor), data:data}])
+    const resp = await axios.post('/api/pagamento', {valor:parseFloat(valor), data:data})
 
     if (resp.data == true){
       setPagamentos([...pagamentos, {valor: parseFloat(valor), data:data}])
